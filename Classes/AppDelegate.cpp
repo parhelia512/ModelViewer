@@ -1,30 +1,39 @@
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "MainScene.h"
 
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {}
 AppDelegate::~AppDelegate() {}
 
-void AppDelegate::initGLContextAttrs() {
-    GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 16, 8 };
-    GLView::setGLContextAttrs( glContextAttrs);
+void AppDelegate::initGLContextAttrs() 
+{
+	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 16, 8 };
+	GLView::setGLContextAttrs( glContextAttrs);
 }
 
-bool AppDelegate::applicationDidFinishLaunching() {
-    auto director = Director::getInstance();
-    auto glview = director -> getOpenGLView();
-    if( !glview) {
-        glview = GLViewImpl::create( "My Game");
-        director -> setOpenGLView( glview);
-    }
-    director -> setDisplayStats( true);
-    director -> setAnimationInterval( 1.0 / 60);
-    auto scene = HelloWorld::createScene();
-    director -> runWithScene( scene);
+bool AppDelegate::applicationDidFinishLaunching() 
+{
+	auto director = Director::getInstance();
+	auto glview = director -> getOpenGLView();
 
-    return true;
+	if( !glview) 
+	{
+		glview = GLViewImpl::create( "ModelViewer");
+		director -> setOpenGLView( glview);
+	}
+
+	glview -> setDesignResolutionSize( 640, 480, ResolutionPolicy::SHOW_ALL);
+	glview -> setFrameSize( 640, 480);
+
+	director -> setDisplayStats( true);
+	director -> setAnimationInterval( 1.0 / 60);
+
+	auto scene = Main::createScene();
+	director -> runWithScene( scene);
+
+	return true;
 }
 
 void AppDelegate::applicationDidEnterBackground() { Director::getInstance()->stopAnimation(); }
