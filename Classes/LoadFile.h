@@ -31,6 +31,7 @@ private:
 	HANDLE hFind;
 	WIN32_FIND_DATA FindFileData;
 #endif
+	cocos2d::Animate3D* animate;
 
 	std::vector <std::string> loadModelName;
 	cocos2d::Map <std::string, cocos2d::Sprite3D*> loadModelData;

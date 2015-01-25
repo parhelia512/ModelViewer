@@ -26,11 +26,11 @@ bool Main::init()
 	fileInstance -> load3DModel();
 
 	sprite = fileInstance -> getModelData( 0);
-	addChild( sprite, 0);
+	addChild( sprite);
 	label = Label::createWithTTF( fileInstance -> getModelName(), "fonts/arial.ttf", 24);
 	label -> setPosition( Vec2( origin.x + visibleSize.width/2,
 							origin.y + visibleSize.height - label->getContentSize().height));
-	addChild( label, 100);
+	addChild( label);
 
 	auto listener = EventListenerTouchOneByOne::create();
 	listener -> setSwallowTouches( true);
@@ -43,6 +43,13 @@ bool Main::init()
 	auto dip = Director::getInstance() -> getEventDispatcher();
 	dip -> addEventListenerWithSceneGraphPriority( listener, this);
 
+	auto s = Director::getInstance()->getWinSize();
+	auto camera = Camera::createOrthographic( s.width, s.height, 1, 1000);
+	camera -> setPosition3D( Vec3(0, 0, 500));
+	camera -> lookAt( Vec3(0, 0, 0), Vec3(0, 0, -1));
+
+	addChild(camera);
+
 	scheduleUpdate();
 
 	return true;
@@ -50,24 +57,27 @@ bool Main::init()
 
 void Main::update( float delta)
 {
-	
+	if( checkFlag( PushFlag))
+	{
+
+	}
 }
 
 bool Main::onTouchBegan( Touch* touch,Event* event)
 {
-	auto location = touch->getLocation();
-
+	touchStart = touch -> getLocation();
+	setFlag( PushFlag);
 	return true;
 }
 
 void Main::onTouchMoved( Touch* touch, Event* event)
 {
-
+	nowPoint = touch -> getLocation();
 }
 
 void Main::onTouchEnded( Touch* touch, Event* event)
 {
-
+	resetFlag( PushFlag);
 }
 
 void Main::onTouchCancelled( Touch* touch, Event* event)
@@ -355,20 +365,30 @@ void Main::menuMinusButtonCallback( Ref* pSender)
 
 void Main::menuNextFileCallback( Ref* pSender)
 {
-	auto nextSprite = fileInstance -> getModelData( 1);
-	if( sprite != nextSprite) 
-	{
-		addChild( nextSprite);
-	}
+	removeChild( sprite);
+	sprite = fileInstance -> getModelData( 1);
+	addChild( sprite);
+	MenuFlags = 0;
+	removeChild( label);
+	label = Label::createWithTTF( fileInstance -> getModelName(), "fonts/arial.ttf", 24);
+	label -> setPosition( Vec2( origin.x + visibleSize.width/2,
+							origin.y + visibleSize.height - label->getContentSize().height));
+	addChild( label);
+	menuAllReset();
 }
 
 void Main::menuPrevFileCallback( Ref* pSender)
 {
-	auto nextSprite = fileInstance -> getModelData( -1);
-	if( sprite != nextSprite) 
-	{
-		addChild( nextSprite);
-	}
+	removeChild( sprite);
+	sprite = fileInstance -> getModelData( -1);
+	addChild( sprite);
+	MenuFlags = 0;
+	removeChild( label);
+	label = Label::createWithTTF( fileInstance -> getModelName(), "fonts/arial.ttf", 24);
+	label -> setPosition( Vec2( origin.x + visibleSize.width/2,
+							origin.y + visibleSize.height - label->getContentSize().height));
+	addChild( label);
+	menuAllReset();
 }
 
 void Main::menuModelReloadCallback( Ref* pSender)
@@ -411,4 +431,62 @@ void Main::setFlag( unsigned short flag)
 void Main::resetFlag( unsigned short flag)
 {
 	MenuFlags &= ~flag;
+}
+
+void Main::menuAllReset( void)
+{
+	menuItem[0] = MenuItemImage::create( "Picture/MoveIdleNormal.png", "Picture/MoveIdleSelected.png",
+											CC_CALLBACK_1( Main::menuMoveCallback, this));
+	menuItem[0] -> setPosition( Vec2( 30, 450));
+	resetMenuSprite( 0);
+	resetFlag( MoveFlag);
+
+	menuItem[1] = MenuItemImage::create( "Picture/RotationIdleNormal.png", "Picture/RotationIdleSelected.png",
+											CC_CALLBACK_1( Main::menuRotationCallback, this));
+	menuItem[1] -> setPosition( Vec2( 80, 450));
+	resetMenuSprite( 1);
+	resetFlag( RotationFlag);
+
+	menuItem[2] = MenuItemImage::create( "Picture/ScaleIdleNormal.png", "Picture/ScaleIdleSelected.png",
+												CC_CALLBACK_1( Main::menuScaleCallback, this));
+	menuItem[2] -> setPosition( Vec2( 130, 450));
+	resetMenuSprite( 2);
+	resetFlag( ScaleFlag);
+
+	menuItem[3] = MenuItemImage::create( "Picture/X_IdleNormal.png", "Picture/X_IdleSelected.png",
+												CC_CALLBACK_1( Main::menuXButtonCallback, this));
+	menuItem[3] -> setPosition( Vec2( 22, 405));
+	resetMenuSprite( 3);
+	resetFlag( XFlag);
+	
+	menuItem[4] = MenuItemImage::create( "Picture/Y_IdleNormal.png", "Picture/Y_IdleSelected.png",
+	CC_CALLBACK_1( Main::menuYButtonCallback, this));
+	menuItem[4] -> setPosition( Vec2( 52, 405));
+	resetMenuSprite( 4);
+	resetFlag( YFlag);
+	
+	menuItem[5] = MenuItemImage::create( "Picture/Z_IdleNormal.png", "Picture/Z_IdleSelected.png",
+	CC_CALLBACK_1( Main::menuZButtonCallback, this));
+	menuItem[5] -> setPosition( Vec2( 82, 405));
+	resetMenuSprite( 5);
+	resetFlag( ZFlag);
+	
+	menuItem[6] = MenuItemImage::create( "Picture/PlusIdleNormal.png", "Picture/PlusIdleSelected.png",
+	CC_CALLBACK_1( Main::menuPlusButtonCallback, this));
+	menuItem[6] -> setPosition( Vec2( 65, 368));
+	resetMenuSprite( 6);
+	resetFlag( PlusFlag);
+	
+	menuItem[7] = MenuItemImage::create( "Picture/MinusIdleNormal.png", "Picture/MinusIdleSelected.png",
+	CC_CALLBACK_1( Main::menuMinusButtonCallback, this));
+	menuItem[7] -> setPosition( Vec2( 25, 368));
+	resetMenuSprite( 7);
+	resetFlag( MinusFlag);
+
+	menuItem[8] = MenuItemImage::create( "Picture/AnimeStartNormal.png", "Picture/AnimeStartSelected.png",
+												CC_CALLBACK_1( Main::menuModelAnimationCallback, this));
+	menuItem[8] -> setPosition( Vec2( 560, 38));
+	resetMenuSprite( 8);
+	fileInstance -> stopModelAnime();
+	resetFlag( AnimeFlag);
 }

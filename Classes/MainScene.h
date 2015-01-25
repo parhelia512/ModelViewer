@@ -49,6 +49,8 @@ private:
 		PlusFlag		= ( 1 << 6),
 		MinusFlag		= ( 1 << 7),
 		AnimeFlag		= ( 1 << 8),
+
+		PushFlag		= ( 1 << 9),
 	};
 
 	unsigned short MenuFlags;
@@ -56,6 +58,8 @@ private:
 
 	cocos2d::Label* label;
 	cocos2d::Sprite3D* sprite;
+	cocos2d::Vec2 touchStart;
+	cocos2d::Vec2 nowPoint;
 	cocos2d::Vec2 origin;
 	cocos2d::Size visibleSize;
 	cocos2d::Menu* menu;
@@ -67,6 +71,7 @@ private:
 	void setMenuSprite( void);
 	void resetMenuSprite( int number);
 	void setMenuItem( void);
+	void menuAllReset( void);
 };
 
 #endif // _MAIN_SCENE_H_

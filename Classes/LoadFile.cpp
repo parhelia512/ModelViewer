@@ -53,7 +53,7 @@ void LoadFile::load3DModel( void)
 				auto animation = Animation3D::create( loadPath);
 				if( animation != nullptr)
 				{
-					auto animate = Animate3D::create( animation);
+					animate = Animate3D::create( animation);
 					loadModelAnimate.insert( fileName, animate);
 				}
 				string filePath = modelDirPath + fileName;
@@ -105,7 +105,7 @@ Sprite3D* LoadFile::getModelData( int searchCount)
 	else if( loadFileCount == loadModelName.size()) { loadFileCount = 0; }
 
 	auto sprite = loadModelData.at( loadModelName[loadFileCount]);
-	sprite -> setPosition( Vec2( 320, 240));
+	sprite -> setPosition3D( Vec3( 320, 200, -5));
 	sprite -> setScale( 100.0f);
 	return sprite;
 }
@@ -113,14 +113,14 @@ Sprite3D* LoadFile::getModelData( int searchCount)
 void LoadFile::startModelAnime( void)
 {
 	auto sprite = loadModelData.at( loadModelName[loadFileCount]);
-	auto animate = loadModelAnimate.at( loadModelName[loadFileCount]);
+	animate = loadModelAnimate.at( loadModelName[loadFileCount]);
 	if( animate != nullptr) { sprite -> runAction( RepeatForever::create( animate)); }
 }
 
 void LoadFile::stopModelAnime( void)
 {
 	auto sprite = loadModelData.at( loadModelName[loadFileCount]);
-	auto animate = loadModelAnimate.at( loadModelName[loadFileCount]);
+	animate = loadModelAnimate.at( loadModelName[loadFileCount]);
 	if( animate != nullptr) { sprite -> stopAllActions(); }
 }
 
