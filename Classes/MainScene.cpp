@@ -319,6 +319,12 @@ void Main::menuPlusButtonCallback( Ref* pSender)
 		resetMenuSprite( 6);
 		setFlag( PlusFlag);
 	}
+
+	menuItem[7] = MenuItemImage::create( "Picture/MinusIdleNormal.png", "Picture/MinusIdleSelected.png",
+											CC_CALLBACK_1( Main::menuMinusButtonCallback, this));
+	menuItem[7] -> setPosition( Vec2( 25, 368));
+	resetMenuSprite( 7);
+	resetFlag( MinusFlag);
 }
 
 void Main::menuMinusButtonCallback( Ref* pSender)
@@ -329,7 +335,7 @@ void Main::menuMinusButtonCallback( Ref* pSender)
 												CC_CALLBACK_1( Main::menuMinusButtonCallback, this));
 		menuItem[7] -> setPosition( Vec2( 25, 368));
 		resetMenuSprite( 7);
-		resetFlag( PlusFlag);
+		resetFlag( MinusFlag);
 	}
 	else
 	{
@@ -337,8 +343,14 @@ void Main::menuMinusButtonCallback( Ref* pSender)
 												CC_CALLBACK_1( Main::menuMinusButtonCallback, this));
 		menuItem[7] -> setPosition( Vec2( 25, 368));
 		resetMenuSprite( 7);
-		setFlag( PlusFlag);
+		setFlag( MinusFlag);
 	}
+
+	menuItem[6] = MenuItemImage::create( "Picture/PlusIdleNormal.png", "Picture/PlusIdleSelected.png",
+											CC_CALLBACK_1( Main::menuPlusButtonCallback, this));
+	menuItem[6] -> setPosition( Vec2( 65, 368));
+	resetMenuSprite( 6);
+	resetFlag( PlusFlag);
 }
 
 void Main::menuNextFileCallback( Ref* pSender)
