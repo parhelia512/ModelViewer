@@ -28,9 +28,13 @@ bool Main::init()
 	sprite = fileInstance -> getModelData( 0);
 	addChild( sprite);
 	label = Label::createWithTTF( fileInstance -> getModelName(), "fonts/arial.ttf", 24);
-	label -> setPosition( Vec2( origin.x + visibleSize.width/2,
-							origin.y + visibleSize.height - label->getContentSize().height));
-	addChild( label);
+	label -> setPosition( Vec2( origin.x + visibleSize.width / 2,
+							origin.y + visibleSize.height - label -> getContentSize().height));
+	addChild( label); 
+
+	for( auto &p : pointStatus) { p = Label::create(); addChild( p); }
+	for( auto &p : rotationStatus) { p = Label::create(); addChild( p); }
+	scaleStatus = Label::create(); addChild( scaleStatus);
 
 	auto listener = EventListenerTouchOneByOne::create();
 	listener -> setSwallowTouches( true);
@@ -43,12 +47,12 @@ bool Main::init()
 	auto dip = Director::getInstance() -> getEventDispatcher();
 	dip -> addEventListenerWithSceneGraphPriority( listener, this);
 
-	auto s = Director::getInstance()->getWinSize();
+	auto s = Director::getInstance() -> getWinSize();
 	auto camera = Camera::createOrthographic( s.width, s.height, 1, 1000);
-	camera -> setPosition3D( Vec3(0, 0, 500));
-	camera -> lookAt( Vec3(0, 0, 0), Vec3(0, 0, -1));
+	camera -> setPosition3D( Vec3( 0, 0, 500));
+	camera -> lookAt( Vec3( 0, 0, 0), Vec3( 0, 0, -1));
 
-	addChild(camera);
+	addChild( camera);
 
 	scheduleUpdate();
 
@@ -104,6 +108,60 @@ void Main::update( float delta)
 		scale = sprite -> getScale() + scale;
 		sprite -> setScale( scale);
 	}
+	updateLabel();
+}
+
+void Main::updateLabel( void)
+{
+	const int fontSize = 18;
+	removeChild( pointStatus[ParamX]);
+	sprintf( spriteState, "Pos X:%3.1f", sprite -> getPositionX());
+	pointStatus[ParamX] = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	pointStatus[ParamX] -> setPosition( Vec2( origin.x + visibleSize.width - pointStatus[ParamX] -> getContentSize().width / 2,
+							origin.y + visibleSize.height - pointStatus[ParamX] -> getContentSize().height));
+	addChild( pointStatus[ParamX]);
+
+	removeChild( pointStatus[ParamY]);
+	sprintf( spriteState, "Y:%3.1f", sprite -> getPositionY());
+	pointStatus[ParamY] = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	pointStatus[ParamY] -> setPosition( Vec2( origin.x + visibleSize.width - pointStatus[ParamY] -> getContentSize().width / 2,
+							origin.y + visibleSize.height - pointStatus[ParamY] -> getContentSize().height * 2));
+	addChild( pointStatus[ParamY]);
+
+	removeChild( pointStatus[ParamZ]);
+	sprintf( spriteState, "Z:%3.1f", sprite -> getPositionZ());
+	pointStatus[ParamZ] = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	pointStatus[ParamZ] -> setPosition( Vec2( origin.x + visibleSize.width - pointStatus[ParamZ] -> getContentSize().width / 2,
+							origin.y + visibleSize.height - pointStatus[ParamZ] -> getContentSize().height * 3));
+	addChild( pointStatus[ParamZ]);
+
+	removeChild( rotationStatus[ParamX]);
+	sprintf( spriteState, "Rot X:%3.1f", sprite -> getRotation3D().x);
+	rotationStatus[ParamX] = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	rotationStatus[ParamX] -> setPosition( Vec2( origin.x + visibleSize.width - rotationStatus[ParamX] -> getContentSize().width / 2,
+							origin.y + visibleSize.height - rotationStatus[ParamX] -> getContentSize().height * 4));
+	addChild( rotationStatus[ParamX]);
+
+	removeChild( rotationStatus[ParamY]);
+	sprintf( spriteState, "Y:%3.1f", sprite -> getRotation3D().y);
+	rotationStatus[ParamY] = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	rotationStatus[ParamY] -> setPosition( Vec2( origin.x + visibleSize.width - rotationStatus[ParamY] -> getContentSize().width / 2,
+							origin.y + visibleSize.height - rotationStatus[ParamY] -> getContentSize().height * 5));
+	addChild( rotationStatus[ParamY]);
+
+	removeChild( rotationStatus[ParamZ]);
+	sprintf( spriteState, "Z:%3.1f", sprite -> getRotation3D().z);
+	rotationStatus[ParamZ] = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	rotationStatus[ParamZ] -> setPosition( Vec2( origin.x + visibleSize.width - rotationStatus[ParamZ] -> getContentSize().width / 2,
+							origin.y + visibleSize.height - rotationStatus[ParamZ] -> getContentSize().height * 6));
+	addChild( rotationStatus[ParamZ]);
+
+	removeChild( scaleStatus);
+	sprintf( spriteState, "Sca :%3.1f", sprite -> getScale());
+	scaleStatus = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	scaleStatus -> setPosition( Vec2( origin.x + visibleSize.width - scaleStatus -> getContentSize().width / 2,
+							origin.y + visibleSize.height - scaleStatus -> getContentSize().height * 7));
+	addChild( scaleStatus);
 }
 
 bool Main::onTouchBegan( Touch* touch,Event* event)

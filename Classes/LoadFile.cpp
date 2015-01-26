@@ -106,6 +106,7 @@ Sprite3D* LoadFile::getModelData( int searchCount)
 
 	auto sprite = loadModelData.at( loadModelName[loadFileCount]);
 	sprite -> setPosition3D( Vec3( 320, 200, -5));
+	sprite -> setRotation3D( Vec3( 0, 0, 0));
 	sprite -> setScale( 100.0f);
 	return sprite;
 }

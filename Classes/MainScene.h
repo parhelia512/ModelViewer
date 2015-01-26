@@ -51,11 +51,19 @@ private:
 		AnimeFlag		= ( 1 << 8),
 
 		PushFlag		= ( 1 << 9),
+
+		ParamX = 0,
+		ParamY = 1,
+		ParamZ = 2,
 	};
 
+	char spriteState[256];
 	unsigned short MenuFlags;
 	LoadFile* fileInstance;
 
+	cocos2d::Label* pointStatus[3];
+	cocos2d::Label* rotationStatus[3];
+	cocos2d::Label* scaleStatus;
 	cocos2d::Label* label;
 	cocos2d::Sprite3D* sprite;
 	cocos2d::Vec2 touchStart;
@@ -72,6 +80,7 @@ private:
 	void resetMenuSprite( int number);
 	void setMenuItem( void);
 	void menuAllReset( void);
+	void updateLabel( void);
 };
 
 #endif // _MAIN_SCENE_H_
