@@ -20,6 +20,10 @@ bool Main::init()
 	visibleSize = Director::getInstance() -> getVisibleSize();
 	origin = Director::getInstance() -> getVisibleOrigin();
 
+	auto bg = LayerColor::create( Color4B( 120, 120, 120, 255), visibleSize.width, visibleSize.height);
+	bg -> setPosition3D( Vec3( 0, 0, -200));
+	addChild( bg);
+
 	setMenuItem();
 	setMenuSprite();
 
@@ -48,6 +52,7 @@ bool Main::init()
 	dip -> addEventListenerWithSceneGraphPriority( listener, this);
 
 	auto s = Director::getInstance() -> getWinSize();
+	
 	auto camera = Camera::createOrthographic( s.width, s.height, 1, 1000);
 	camera -> setPosition3D( Vec3( 0, 0, 500));
 	camera -> lookAt( Vec3( 0, 0, 0), Vec3( 0, 0, -1));
@@ -61,9 +66,9 @@ bool Main::init()
 
 void Main::update( float delta)
 {
-	float scale;
-	Vec3 velocity;
-	Vec3 Angle;
+	float scale = 0;
+	Vec3 velocity = Vec3( 0, 0, 0);
+	Vec3 Angle = Vec3( 0, 0, 0);
 
 	if( checkFlag( PushFlag) && checkFlag( MoveFlag))
 	{
