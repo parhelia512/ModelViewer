@@ -64,6 +64,7 @@ private:
 	cocos2d::Label* pointStatus[3];
 	cocos2d::Label* rotationStatus[3];
 	cocos2d::Label* scaleStatus;
+	cocos2d::Label* modelCount;
 	cocos2d::Label* label;
 	cocos2d::Sprite3D* sprite;
 	cocos2d::Vec2 touchStart;

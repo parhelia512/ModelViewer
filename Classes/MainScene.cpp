@@ -39,7 +39,8 @@ bool Main::init()
 	for( auto &p : pointStatus) { p = Label::create(); addChild( p); }
 	for( auto &p : rotationStatus) { p = Label::create(); addChild( p); }
 	scaleStatus = Label::create(); addChild( scaleStatus);
-
+	modelCount = Label::create(); addChild( modelCount);
+	
 	auto listener = EventListenerTouchOneByOne::create();
 	listener -> setSwallowTouches( true);
 
@@ -167,6 +168,13 @@ void Main::updateLabel( void)
 	scaleStatus -> setPosition( Vec2( origin.x + visibleSize.width - scaleStatus -> getContentSize().width / 2,
 							origin.y + visibleSize.height - scaleStatus -> getContentSize().height * 7));
 	addChild( scaleStatus);
+
+	removeChild( modelCount);
+	sprintf( spriteState, "ModelCount :%02d", fileInstance -> getModelCount());
+	modelCount = Label::createWithTTF( spriteState, "fonts/arial.ttf", fontSize);
+	modelCount -> setPosition( Vec2( origin.x + visibleSize.width - modelCount -> getContentSize().width / 2,
+							origin.y + visibleSize.height - modelCount -> getContentSize().height * 8));
+	addChild( modelCount);
 }
 
 bool Main::onTouchBegan( Touch* touch,Event* event)

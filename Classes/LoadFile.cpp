@@ -133,3 +133,8 @@ string LoadFile::getModelName( void)
 	fileName.erase( fileName.size() - ( fileName.size() - point), fileName.size());
 	return fileName;
 }
+
+int LoadFile::getModelCount( void)
+{
+	return loadModelData.size();
+}

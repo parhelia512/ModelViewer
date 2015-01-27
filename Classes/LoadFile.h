@@ -16,6 +16,7 @@ public:
 	std::string getModelName( void);
 	void startModelAnime( void);
 	void stopModelAnime( void);
+	int getModelCount( void);
 
 private:
 	LoadFile();
