@@ -17,15 +17,11 @@ LoadFile* LoadFile::getInstance( void)
 	return P;
 }
 
-void LoadFile::load3DModel( void)
+int LoadFile::load3DModel( void)
 {
 	programPath = file -> fullPathForFilename( "fbx-conv.exe");
 
-	if( programPath == "")
-	{
-		printf("ERROR");
-		// fbx-conv.exe‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ
-	}
+	if( programPath == "") { return No_Conv_exe; }
 
 	modelDirPath = programPath;
 	int point = modelDirPath.rfind( '/', modelDirPath.size());
@@ -62,13 +58,46 @@ void LoadFile::load3DModel( void)
 		} while( FindNextFile(hFind, &FindFileData));
 		loadModelName = loadModelData.keys();
 		FindClose(hFind);
+		return 0;
 	}
-	else
-	{
-		// No Model Data
-	}
+	searchFilePath = modelDirPath + "*.obj";
+	loadCocosModel();
+
+	searchFilePath = modelDirPath + "*.c3b";
+	loadCocosModel();
+
+	searchFilePath = modelDirPath + "*.c3t";
+	loadCocosModel();
+
+	if( loadModelData.size() == 0) { return No_Model_Data; }
 #endif
 }
+
+void LoadFile::loadCocosModel( void)
+{
+	if(( hFind = FindFirstFile( searchFilePath.c_str(), &FindFileData)) != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			string fileName = FindFileData.cFileName;
+			string loadPath = "Model/" + fileName;
+			auto sprite = Sprite3D::create( loadPath);
+			if( sprite != nullptr) 
+			{ 
+				loadModelData.insert( fileName, sprite); 
+				auto animation = Animation3D::create( loadPath);
+				if( animation != nullptr)
+				{
+					animate = Animate3D::create( animation);
+					loadModelAnimate.insert( fileName, animate);
+				}
+			}
+		} while( FindNextFile(hFind, &FindFileData));
+		loadModelName = loadModelData.keys();
+		FindClose(hFind);
+	}
+}
+
 
 void LoadFile::reload3DModel( void)
 {
@@ -95,6 +124,15 @@ void LoadFile::reload3DModel( void)
 	} while( FindNextFile(hFind, &FindFileData));
 	loadModelName = loadModelData.keys();
 	FindClose(hFind);
+
+	searchFilePath = modelDirPath + "*.obj";
+	loadCocosModel();
+
+	searchFilePath = modelDirPath + "*.c3b";
+	loadCocosModel();
+
+	searchFilePath = modelDirPath + "*.c3t";
+	loadCocosModel();
 #endif
 }
 
@@ -132,9 +170,4 @@ string LoadFile::getModelName( void)
 	int point = fileName.rfind( '.', fileName.size());
 	fileName.erase( fileName.size() - ( fileName.size() - point), fileName.size());
 	return fileName;
-}
-
-int LoadFile::getModelCount( void)
-{
-	return loadModelData.size();
 }

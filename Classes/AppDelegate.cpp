@@ -30,7 +30,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director -> setDisplayStats( true);
 	director -> setAnimationInterval( 1.0 / 60);
 
-	auto scene = Main::createScene();
+	auto scene = MainScene::createScene();
 	director -> runWithScene( scene);
 
 	return true;
